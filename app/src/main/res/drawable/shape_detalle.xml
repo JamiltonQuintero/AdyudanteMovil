@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid
+        android:color="#2196F3"/>
+
+
+    <corners
+        android:radius="4dp"/>
+
+    <gradient
+        android:gradientRadius="12dp"
+        android:startColor="#2196F3"
+        android:centerY="@android:integer/config_mediumAnimTime"
+        android:endColor="@color/material_on_surface_stroke"
+
+        android:centerX="@android:integer/config_shortAnimTime"/>
+
+        <stroke
+            android:width="2dp"
+            android:color="@color/black"/>
+
+</shape>

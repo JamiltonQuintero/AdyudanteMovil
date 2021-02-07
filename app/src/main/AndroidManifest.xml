@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jamilton.mvvmlivedata">
+    package="com.jamilton.gestiondeltiempo">
 
     <application
         android:allowBackup="true"
@@ -8,14 +8,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MVVMLiveData">
-        <activity android:name=".MainActivity">
+        android:theme="@style/Theme.GestionDelTiempo">
+        <activity android:name="com.jamilton.gestiondeltiempo.view.iu.AddEditEventoActivivy"></activity>
+        <activity
+            android:name="com.jamilton.gestiondeltiempo.MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name="com.jamilton.gestiondeltiempo.model.notificaciones.AlertReceiver" />
     </application>
 
 </manifest>

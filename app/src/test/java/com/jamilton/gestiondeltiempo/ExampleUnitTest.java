@@ -1,4 +1,4 @@
-package com.jamilton.mvvmlivedata;
+package com.jamilton.gestiondeltiempo;
 
 import org.junit.Test;
 

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/calendar_text_unselectable"
+    android:layout_gravity="center"
+    >
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="300dp"
+        android:layout_height="440dp"
+        android:background="@drawable/shape_detalle"
+        >
+
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="80dp"
+    android:layout_marginTop="20dp"
+    >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="18dp"
+            android:gravity="center"
+            android:layout_marginTop="50dp"
+            >
+
+            <TextView
+                android:id="@+id/tvTituloDes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TITULO"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="24sp"/>
+            <TextView
+                android:id="@+id/tvDescripcionDes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DESCRIPCION"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"
+                android:textSize="24sp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/tvHoraDes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="HORA"
+                    android:gravity="end"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp"
+                    android:textSize="24sp"/>
+                <TextView
+                    android:id="@+id/tvAmPmDes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="AMPM"
+                    android:gravity="start"
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="24sp"/>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tvDiaNomDes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DIA"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"
+                android:textSize="24sp"/>
+            <TextView
+                android:layout_marginTop="8dp"
+                android:id="@+id/tvFechaDes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="FECHA"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="24sp"/>
+
+        </LinearLayout>
+
+</ScrollView>
+
+
+            <Button
+                android:id="@+id/btnFinalizar"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="bottom"
+                android:text="Finalizar evento"
+                android:background="@drawable/shape_detalle"/>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

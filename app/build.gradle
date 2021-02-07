@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.jamilton.mvvmlivedata"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -35,14 +35,16 @@ dependencies {
     def nav_version = "2.3.2"
     def work_version = "2.4.0"
 
+    implementation 'com.squareup:android-times-square:1.6.5@aar'
+
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation "androidx.room:room-runtime:$room_version"
-
 
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
+
+    implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
     implementation "androidx.work:work-runtime:$work_version"
 
