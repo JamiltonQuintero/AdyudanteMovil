@@ -11,18 +11,8 @@ import android.content.Intent;
 import android.os.Build;
 import androidx.core.app.NotificationCompat;
 
-import com.jamilton.gestiondeltiempo.MainActivity;
+import com.jamilton.gestiondeltiempo.view.iu.activities.MainActivity;
 import com.jamilton.gestiondeltiempo.R;
-import com.jamilton.gestiondeltiempo.view.iu.DetalleEvento;
-
-import static com.jamilton.gestiondeltiempo.MainActivity.EXTRA_EVENTO_AMPM;
-import static com.jamilton.gestiondeltiempo.MainActivity.EXTRA_EVENTO_DESCRIPCION;
-import static com.jamilton.gestiondeltiempo.MainActivity.EXTRA_EVENTO_DIA;
-import static com.jamilton.gestiondeltiempo.MainActivity.EXTRA_EVENTO_DIA_NOMBRE;
-import static com.jamilton.gestiondeltiempo.MainActivity.EXTRA_EVENTO_HORA;
-import static com.jamilton.gestiondeltiempo.MainActivity.EXTRA_EVENTO_ID;
-import static com.jamilton.gestiondeltiempo.MainActivity.EXTRA_EVENTO_LONG;
-import static com.jamilton.gestiondeltiempo.MainActivity.EXTRA_EVENTO_TITULO;
 
 
 public class NotificationHelper extends ContextWrapper {

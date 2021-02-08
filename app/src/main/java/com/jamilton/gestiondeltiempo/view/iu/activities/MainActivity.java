@@ -1,9 +1,8 @@
-package com.jamilton.gestiondeltiempo;
+package com.jamilton.gestiondeltiempo.view.iu.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -23,14 +22,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.jamilton.gestiondeltiempo.R;
 import com.jamilton.gestiondeltiempo.model.adapter.EventoAdapter;
 import com.jamilton.gestiondeltiempo.model.notificaciones.AlertReceiver;
 import com.jamilton.gestiondeltiempo.model.pojo.Evento;
-import com.jamilton.gestiondeltiempo.view.iu.AddEditEventoActivivy;
 import com.jamilton.gestiondeltiempo.presenter.viewmodel.EventoViewModel;
-import com.jamilton.gestiondeltiempo.view.iu.DetalleEvento;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -209,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.deletAllNotes:
+            case R.id.elimAllEvent:
 
                 evetoViewModel.getAllEventos().observe(this, new Observer<List<Evento>>() {
                     @Override
@@ -226,6 +223,12 @@ public class MainActivity extends AppCompatActivity {
 
                 evetoViewModel.deleteAll();
                 Toast.makeText(this, "Se eliminaron todos los eventos", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.desarrollador:
+
+                Intent intent = new Intent(MainActivity.this,)
+
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.jamilton.mvvmlivedata"
+        applicationId "com.jamilton.asismovil"
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
@@ -35,6 +35,8 @@ dependencies {
     def nav_version = "2.3.2"
     def work_version = "2.4.0"
 
+    implementation "com.airbnb.android:lottie:3.4.0"
+
     implementation 'com.squareup:android-times-square:1.6.5@aar'
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -47,6 +49,8 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
     implementation "androidx.work:work-runtime:$work_version"
+
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     testImplementation 'junit:junit:4.+'
     annotationProcessor "androidx.room:room-compiler:$room_version"

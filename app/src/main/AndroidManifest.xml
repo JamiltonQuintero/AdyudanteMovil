@@ -9,18 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GestionDelTiempo">
-        <activity android:name="com.jamilton.gestiondeltiempo.view.iu.AddEditEventoActivivy"></activity>
-        <activity
-            android:name="com.jamilton.gestiondeltiempo.MainActivity"
-            android:launchMode="singleTop">
+        <activity android:name=".SobreElDesarrollador"></activity>
+        <activity android:name=".view.iu.activities.AnimacionInicio">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.iu.activities.AddEditEventoActivivy" />
+        <activity android:name=".view.iu.activities.MainActivity" />
 
-        <receiver android:name="com.jamilton.gestiondeltiempo.model.notificaciones.AlertReceiver" />
+        <receiver android:name=".model.notificaciones.AlertReceiver" />
     </application>
 
 </manifest>

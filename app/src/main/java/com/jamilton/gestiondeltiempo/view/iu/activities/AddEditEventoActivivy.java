@@ -1,4 +1,4 @@
-package com.jamilton.gestiondeltiempo.view.iu;
+package com.jamilton.gestiondeltiempo.view.iu.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,18 +10,15 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.jamilton.gestiondeltiempo.MainActivity;
 import com.jamilton.gestiondeltiempo.R;
 import com.jamilton.gestiondeltiempo.model.notificaciones.AlertReceiver;
 import com.jamilton.gestiondeltiempo.model.pojo.Evento;
@@ -30,7 +27,6 @@ import com.jamilton.gestiondeltiempo.presenter.IDescripcionEventoFragmentPresent
 import com.jamilton.gestiondeltiempo.presenter.viewmodel.EventoViewModel;
 import com.squareup.timessquare.CalendarPickerView;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 

@@ -1,11 +1,7 @@
-package com.jamilton.gestiondeltiempo.view.iu;
+package com.jamilton.gestiondeltiempo.view.iu.activities;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +9,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.ComponentActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.jamilton.gestiondeltiempo.MainActivity;
+import com.jamilton.gestiondeltiempo.view.iu.activities.MainActivity;
 import com.jamilton.gestiondeltiempo.R;
-import com.jamilton.gestiondeltiempo.model.notificaciones.AlertReceiver;
 import com.jamilton.gestiondeltiempo.model.pojo.Evento;
 import com.jamilton.gestiondeltiempo.presenter.viewmodel.EventoViewModel;
 

@@ -2,8 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <item
-        android:id="@+id/deletAllNotes"
+        android:id="@+id/elimAllEvent"
         android:title="Eliminar todos los eventos"
-        app:showAsAction="never"/>
+        app:showAsAction="never"
+        android:iconTint="@color/azul_claro"
+        />
+
+   <item
+       android:id="@+id/desarrollador"
+       android:title="Eliminar todos los eventos"
+       app:showAsAction="never"
+       android:iconTint="@color/azul_claro"/>
+
+
+
 </menu>

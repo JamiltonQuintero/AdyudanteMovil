@@ -9,7 +9,7 @@
 
     <gradient
         android:gradientRadius="12dp"
-        android:startColor="#2196F3"
+        android:startColor="@color/azul_claro"
         android:centerY="@android:integer/config_mediumAnimTime"
         android:endColor="@color/material_on_surface_stroke"
 
