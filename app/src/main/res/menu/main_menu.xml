@@ -5,17 +5,13 @@
 
     <item
         android:id="@+id/elimAllEvent"
-        android:title="Eliminar todos los eventos"
+        android:title="@string/eliminar_todos_los_eventos"
         app:showAsAction="never"
-        android:iconTint="@color/azul_claro"
         />
 
    <item
        android:id="@+id/desarrollador"
-       android:title="Eliminar todos los eventos"
-       app:showAsAction="never"
-       android:iconTint="@color/azul_claro"/>
-
-
+       android:title="@string/acerca_del_desarrollador"
+       app:showAsAction="never" />
 
 </menu>

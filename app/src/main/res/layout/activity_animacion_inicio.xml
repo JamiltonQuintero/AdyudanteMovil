@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:lottie_rawRes="@raw/timemanagement"
-        app:lottie_autoPlay="true"/>
+        app:lottie_autoPlay="true" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

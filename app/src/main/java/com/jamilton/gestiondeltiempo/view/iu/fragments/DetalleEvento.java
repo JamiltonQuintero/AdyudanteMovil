@@ -1,7 +1,8 @@
-package com.jamilton.gestiondeltiempo.view.iu.activities;
+package com.jamilton.gestiondeltiempo.view.iu.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.jamilton.gestiondeltiempo.model.notificaciones.NotificationHelper;
 import com.jamilton.gestiondeltiempo.view.iu.activities.MainActivity;
 import com.jamilton.gestiondeltiempo.R;
 import com.jamilton.gestiondeltiempo.model.pojo.Evento;
@@ -19,11 +21,7 @@ import com.jamilton.gestiondeltiempo.presenter.viewmodel.EventoViewModel;
 
 public class DetalleEvento extends DialogFragment {
 
-    private Button finalizar;
-    private int id;
-    Evento evento;
-
-    private EventoViewModel evetoViewModel;
+    private Evento evento;
 
     @Nullable
     @Override
@@ -32,7 +30,7 @@ public class DetalleEvento extends DialogFragment {
 
         View view = inflater.inflate(R.layout.dialog_fragment_detalle,container,false);
 
-        finalizar = view.findViewById(R.id.btnFinalizar);
+        Button finalizar = view.findViewById(R.id.btnFinalizar);
 
         TextView titulo = view.findViewById(R.id.tvTituloDes);
         TextView dia = view.findViewById(R.id.tvFechaDes);
@@ -49,17 +47,10 @@ public class DetalleEvento extends DialogFragment {
         descripcion.setText(evento.getDescripcion().toUpperCase());
 
 
-
-        evetoViewModel = new ViewModelProvider(this).get(EventoViewModel.class);
-
         finalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent();
-                intent.putExtra(MainActivity.EXTRA_EVENTO_ID_DRES, evento.getId());
-                evetoViewModel.delete(evento);
-                startActivityForResult(intent);
                 dismiss();
             }
         });
@@ -69,20 +60,25 @@ public class DetalleEvento extends DialogFragment {
     }
 
 
-    public void startActivityForResult(Intent intent) {
+    public void startActivityForResult(Intent intent, int requesCode) {
 
-        id = intent.getIntExtra(MainActivity.EXTRA_EVENTO_ID,-1);
-        String ampm = intent.getStringExtra(MainActivity.EXTRA_EVENTO_AMPM);
 
-        evento = new Evento(intent.getStringExtra(MainActivity.EXTRA_EVENTO_TITULO),
-                             intent.getStringExtra(MainActivity.EXTRA_EVENTO_DIA),
-                             intent.getStringExtra(MainActivity.EXTRA_EVENTO_DIA_NOMBRE),
-                             intent.getStringExtra(MainActivity.EXTRA_EVENTO_HORA),
-                             ampm,
-                             intent.getStringExtra(MainActivity.EXTRA_EVENTO_DESCRIPCION),
-                             intent.getLongExtra(MainActivity.EXTRA_EVENTO_LONG, -1),
-                             intent.getIntExtra(MainActivity.EXTRA_EVENTO_IMG, -1));
-        evento.setId(id);
+        if (requesCode == MainActivity.DETALLE_EVENTO_REQUEST_MAIN){
+            int id = intent.getIntExtra(MainActivity.EXTRA_EVENTO_ID, -1);
+            String ampm = intent.getStringExtra(MainActivity.EXTRA_EVENTO_AMPM);
+
+            evento = new Evento(intent.getStringExtra(MainActivity.EXTRA_EVENTO_TITULO),
+                    intent.getStringExtra(MainActivity.EXTRA_EVENTO_DIA),
+                    intent.getStringExtra(MainActivity.EXTRA_EVENTO_DIA_NOMBRE),
+                    intent.getStringExtra(MainActivity.EXTRA_EVENTO_HORA),
+                    ampm,
+                    intent.getStringExtra(MainActivity.EXTRA_EVENTO_DESCRIPCION),
+                    intent.getLongExtra(MainActivity.EXTRA_EVENTO_LONG, -1),
+                    intent.getIntExtra(MainActivity.EXTRA_EVENTO_IMG, -1));
+            evento.setId(id);
+
+        }
+
     }
 
 

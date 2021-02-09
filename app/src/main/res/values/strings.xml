@@ -1,3 +1,26 @@
 <resources>
-    <string name="app_name">Gestión Del Tiempo</string>
+    <string name="app_name">AsisMóvil</string>
+    <string name="redso">Redes sociales @jaqandroid</string>
+    <string name="descripcion">Soy Jamilton Quintero, un joven emprendedor de la ciudad de medellin con muchas ganas de salir adelante, si quieres ver como se crean tus apps preferidas sigueme en mis redes sociales donnde muestro el dia a dia de la creacion de estas.</string>
+    <string name="acerca_del_desarrollador">Acerca del desarrollador</string>
+    <string name="eliminar_todos_los_eventos">Eliminar todos los eventos</string>
+    <string name="conoce_un_poco_sobre_mi">Conoce un poco sobre mi</string>
+    <string name="apoyar_al_desarollador">Apoyar al desarollador</string>
+    <string name="paypal">Paypal: 3017759223</string>
+    <string name="hora">00:00</string>
+    <string name="a_m">A.M.</string>
+    <string name="diasem">DiaSem</string>
+    <string name="dia">Dia</string>
+    <string name="titulo">Titulo del evento</string>
+    <string name="descripcion_el_evento">Descripcion el evento</string>
+    <string name="btn_modificar">Modificar</string>
+    <string name="btn_detalle">Detalle</string>
+    <string name="btn_finalizar_evento">Finalizar evento</string>
+    <string name="et_titulo_del_evento">Titulo</string>
+    <string name="et_descripcion_del_evento">Descripción</string>
+    <string name="btn_fecha">Fecha</string>
+    <string name="btn_hora">Hora</string>
+    <string name="btn_guardar">Guardar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

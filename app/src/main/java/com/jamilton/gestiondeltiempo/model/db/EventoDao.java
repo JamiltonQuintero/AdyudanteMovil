@@ -28,4 +28,6 @@ import java.util.List;
         @Query("SELECT * FROM evento_table ORDER BY l ASC")
         LiveData<List<Evento>> getAllEventos();
 
+
+
 }

@@ -2,7 +2,9 @@ package com.jamilton.gestiondeltiempo.view.iu.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +30,7 @@ import com.jamilton.gestiondeltiempo.model.adapter.EventoAdapter;
 import com.jamilton.gestiondeltiempo.model.notificaciones.AlertReceiver;
 import com.jamilton.gestiondeltiempo.model.pojo.Evento;
 import com.jamilton.gestiondeltiempo.presenter.viewmodel.EventoViewModel;
+import com.jamilton.gestiondeltiempo.view.iu.fragments.DetalleEvento;
 
 import java.util.List;
 
@@ -64,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int ADD_EVENTO_REQUEST = 1;
     public static final int EDIT_EVENTO_REQUEST = 2;
-    public static final int DETALLE_EVENTO_REQUEST = 3;
+    public static final int DETALLE_EVENTO_REQUEST_MAIN = 3;
 
     private EventoViewModel evetoViewModel;
     private long l;
@@ -74,8 +78,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = findViewById(R.id.miToll);
+        setSupportActionBar(toolbar);
 
-        setTitle("Gestion del tiempo");
+
+
+        getSupportActionBar().setTitle("Mis recordatorios");
 
         FloatingActionButton buttonAddNote = findViewById(R.id.btn_add_note);
         buttonAddNote.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
             @Override
@@ -127,24 +137,17 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, AddEditEventoActivivy.class);
                 intent.putExtra(AddEditEventoActivivy.EXTRA_ID,evento.getId());
                 startActivityForResult(intent,EDIT_EVENTO_REQUEST);
-            }
 
+            }
         });
 
         adapter.setOnItemClickListenerrr(new EventoAdapter.OnItemClickListenerrr() {
             @Override
             public void onItemClick(Evento evento, View view) {
-                Toast.makeText(MainActivity.this, "recordatorio Fijado", Toast.LENGTH_SHORT).show();
-
-                Log.i("TAGIMG1", "" + evento.getImg());
-
+                Toast.makeText(MainActivity.this, "Recordatorio Fijado", Toast.LENGTH_SHORT).show();
                 evento.setImg(R.drawable.ic_baseline_check_24);
-
-                Intent intent = getIntent();
-                startAlarm(l,evento.getId());
                 evetoViewModel.update(evento);
-
-
+                startAlarm(evento.getL(),evento);
 
             }
         });
@@ -164,37 +167,12 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(EXTRA_EVENTO_DIA_NOMBRE, evento.getDiaN());
                 intent.putExtra(EXTRA_EVENTO_LONG, evento.getL());
                 intent.putExtra(EXTRA_EVENTO_IMG,evento.getImg());
-                detalleEvento.startActivityForResult(intent);
-
+                detalleEvento.startActivityForResult(intent, DETALLE_EVENTO_REQUEST_MAIN);
             }
         });
 
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == ADD_EVENTO_REQUEST && resultCode == RESULT_OK){
-
-            long rec = data.getLongExtra(AddEditEventoActivivy.EXTRA_LONG,1);
-
-            l = rec;
-
-
-            Log.i("TAGGLONG", "onActivityResult: " + lonFecha(rec));
-
-
-        }
-
-        if(requestCode == DETALLE_EVENTO_REQUEST){
-
-            int id = data.getIntExtra(EXTRA_EVENTO_ID_DRES, -1);
-            Log.i("IDFRAG",""+ id);
-            cancelAlarm(id);
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -208,39 +186,49 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.elimAllEvent:
 
-                evetoViewModel.getAllEventos().observe(this, new Observer<List<Evento>>() {
-                    @Override
-                    public void onChanged(List<Evento> eventos) {
-                        for (Evento eve: eventos
-                        ) {
-                            int id;
-                            id= eve.getId();
-                            cancelAlarm(id);
+                    evetoViewModel.getAllEventos().observe(this, new Observer<List<Evento>>() {
+                        @Override
+                        public void onChanged(List<Evento> eventos) {
+                            for (Evento eve: eventos
+                            ) {
+                                int id;
+                                id= eve.getId();
+                                cancelAlarm(id);
+                            }
                         }
-
-                    }
-                });
-
+                    });
                 evetoViewModel.deleteAll();
                 Toast.makeText(this, "Se eliminaron todos los eventos", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.desarrollador:
 
-                Intent intent = new Intent(MainActivity.this,)
+                Intent intent = new Intent(MainActivity.this, SobreElDesarrollador.class);
+                startActivity(intent);
+                break;
 
             default:
-                return super.onOptionsItemSelected(item);
+                Toast.makeText(this, "Algo sucedio, vuelve a intentarlo", Toast.LENGTH_SHORT).show();
         }
+        return super.onOptionsItemSelected(item);
+
     }
 
-
-    private void startAlarm(long c , int id) {
+    private void startAlarm(long c , Evento evento) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intent, 0);
+
+        intent.putExtra("ID", evento.getId());
+        intent.putExtra("TITULO", evento.getTitulo());
+        intent.putExtra("DESCRIPCION", evento.getDescripcion());
+        intent.putExtra("HORA", evento.getHora());
+        intent.putExtra("AMPM", evento.getAmpm());
+        intent.putExtra("DIA", evento.getDia());
+        intent.putExtra("NOMBREDIA", evento.getDiaN());
+        intent.putExtra("FECHA", evento.getL());
+        intent.putExtra("IMG",evento.getImg());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, evento.getId(), intent, 0);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c, pendingIntent);
-        Log.i("Fecha", String.valueOf(c));
     }
 
 
@@ -252,13 +240,5 @@ public class MainActivity extends AppCompatActivity {
         alarmManager.cancel(pendingIntent);
 
     }
-
-    private long lonFecha(long l){
-
-        return l;
-    }
-
-
-
 
 }

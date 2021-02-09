@@ -1,7 +1,9 @@
 package com.jamilton.gestiondeltiempo.view.iu.activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlarmManager;
@@ -11,10 +13,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -41,9 +45,10 @@ public class AddEditEventoActivivy extends AppCompatActivity {
     public static final String EXTRA_LONG =
             "com.jamilton.mvvmlivedata.EXTRA_LONG";
 
-    private EditText etTitulo, etDescripcion;
-    private FloatingActionButton imgTitulo, igmDescripcion;
-    private Button btnGuardar,btnCalendario,btnHora;
+    public static final String EXTRA_LONG_MOD =
+            "com.jamilton.mvvmlivedata.EXTRA_LONG";
+
+    private Button btnGuardar;
     private LinearLayout llTodo;
     private CalendarPickerView pickerView;
     private IDescripcionEventoFragmentPresenter mPresenter;
@@ -59,26 +64,33 @@ public class AddEditEventoActivivy extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_evento_activivy);
 
-        etTitulo = findViewById(R.id.etTitulo);
-        etDescripcion= findViewById(R.id.etDescripcion);
-        imgTitulo = findViewById(R.id.imgTitulo);
-        igmDescripcion = findViewById(R.id.imgDescripcion);
-        llTodo = findViewById(R.id.llTodo);
-        btnGuardar = findViewById(R.id.btnGuardar);
-        btnHora = findViewById(R.id.btnHora);
-        btnCalendario = findViewById(R.id.btnFecha);
-        pickerView = findViewById(R.id.tpFecha);
-        evetoViewModel = new ViewModelProvider(this).get(EventoViewModel.class);
-        mPresenter = new DescripcionEventoFragmentPresenter(etTitulo,etDescripcion,AddEditEventoActivivy.this,diaa,anioa,diaNomm,mess,pickerView);
+        Toolbar toolbar = findViewById(R.id.miToll);
+        setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
 
-        Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_ID)){
-            setTitle("Modificar Evento");
+        pickerView = findViewById(R.id.tpFecha);
+        llTodo = findViewById(R.id.llTodo);
+        btnGuardar = findViewById(R.id.btnGuardar);
+        EditText etTitulo = findViewById(R.id.etTitulo);
+        EditText etDescripcion = findViewById(R.id.etDescripcion);
+        FloatingActionButton imgTitulo = findViewById(R.id.imgTitulo);
+        FloatingActionButton igmDescripcion = findViewById(R.id.imgDescripcion);
+        Button btnHora = findViewById(R.id.btnHora);
+        Button btnCalendario = findViewById(R.id.btnFecha);
+        evetoViewModel = new ViewModelProvider(this).get(EventoViewModel.class);
+        mPresenter = new DescripcionEventoFragmentPresenter(etTitulo, etDescripcion,AddEditEventoActivivy.this,diaa,anioa,diaNomm,mess,pickerView);
 
-        }else {
-            setTitle("Agregar evento");
+
+
+        Intent intent = getIntent();
+        if (intent.hasExtra(EXTRA_ID) && toolbar != null){
+           getSupportActionBar().setTitle("Modificar Evento");
+
+        }else{
+            getSupportActionBar().setTitle("Agregar evento");
+
         }
 
         imgTitulo.setOnClickListener(new View.OnClickListener() {
@@ -161,23 +173,27 @@ public class AddEditEventoActivivy extends AppCompatActivity {
                 Intent intent1 = new Intent(AddEditEventoActivivy.this, MainActivity.class);
                 int id = getIntent().getIntExtra(EXTRA_ID,-1);
 
+                Log.i("TAGGIDDESDE ADDMOD",""+ id);
+
                 if (id == -1){
 
                     Evento evento =mPresenter.crearEvento();
                     Toast.makeText(AddEditEventoActivivy.this, "Registro Exitoso", Toast.LENGTH_SHORT).show();
                     evetoViewModel.insert(evento);
+                    Log.i("TAGGLONG DESDE ADD",""+ evento.getL());
                     intent1.putExtra(EXTRA_LONG,evento.getL());
 
                 }
                 else{
-
                     Evento evento= mPresenter.crearEvento();
                     evento.setId(id);
                     evetoViewModel.update(evento);
+                    intent1.putExtra(EXTRA_LONG,evento.getL());
+                    Log.i("TAGGLONG DESDE MOD",""+ evento.getL());
                     Toast.makeText(AddEditEventoActivivy.this, "Modificación Exitoso", Toast.LENGTH_SHORT).show();
+
                 }
 
-                setResult(RESULT_OK,intent1);
                 finish();
 
             }
@@ -191,13 +207,12 @@ public class AddEditEventoActivivy extends AppCompatActivity {
        mPresenter.llenarEditText(requestCode,resultCode,data);
     }
 
-    private void startAlarm(long c , int id) {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intent, 0);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c, pendingIntent);
-        Log.i("Fecha", String.valueOf(c));
-    }
+    @Override
+    public boolean onSupportNavigateUp() {
 
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        return super.onSupportNavigateUp();
+    }
 
 }

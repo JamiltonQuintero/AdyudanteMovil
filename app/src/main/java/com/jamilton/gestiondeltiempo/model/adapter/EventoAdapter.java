@@ -115,6 +115,7 @@ public class    EventoAdapter extends RecyclerView.Adapter<EventoAdapter.NoteHol
                     int posicion = getAdapterPosition();
                     if (listener != null && posicion != RecyclerView.NO_POSITION){
                         listener.onItemClick(eventos.get(posicion));
+                        notifyItemChanged(posicion);
                     }
                 }
             });

@@ -19,7 +19,6 @@ public class AnimacionInicio extends AppCompatActivity {
         setContentView(R.layout.activity_animacion_inicio);
 
 
-
         LottieAnimationView animationView = findViewById(R.id.animacionLottie);
 
         Animation animation = AnimationUtils.loadAnimation(this,R.anim.animation);

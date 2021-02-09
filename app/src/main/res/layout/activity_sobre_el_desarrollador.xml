@@ -1,9 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SobreElDesarrollador">
+    tools:context=".view.iu.activities.SobreElDesarrollador"
+    android:background="@drawable/shape_detalle"
+    android:orientation="vertical"
+    >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/miToll"
+        layout="@layout/toolbar"/>
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+
+    <TextView
+        android:id="@+id/tAcercaDe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/conoce_un_poco_sobre_mi"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="24sp"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/miPerfill"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:src="@drawable/perf1"
+        app:civ_border_color="#FFFFFF"
+        app:civ_border_width="2dp"
+        android:layout_marginTop="8dp"
+        />
+
+
+
+    <TextView
+        android:id="@+id/tAcercaDeDescri"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="40dp"
+        android:paddingStart="40dp"
+        android:text="@string/descripcion"
+       android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/redso"
+    android:textStyle="bold"
+    android:textColor="@color/black"
+    android:textSize="16sp"
+    android:layout_marginTop="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_icons8_tiktok"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="72dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_icons8_instagram"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_icons8_facebook"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/apoyame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/apoyar_al_desarollador"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_marginTop="16sp"/>
+    <TextView
+        android:id="@+id/paypalDesarollador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/paypal"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"/>
+
+
+
+    </LinearLayout>
+</ScrollView>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/asismovillogo" />
+</LinearLayout>
