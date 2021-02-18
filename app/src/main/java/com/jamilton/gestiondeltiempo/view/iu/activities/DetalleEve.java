@@ -30,7 +30,7 @@ public class DetalleEve extends AppCompatActivity {
 
 
         Log.i("TAGGGID", ""+ id);
-        /*
+
         evento = new Evento(getIntent().getStringExtra("EXTRA_EVENTO_TITULO"),
                 getIntent().getStringExtra("EXTRA_EVENTO_DIA"),
                 getIntent().getStringExtra("EXTRA_EVENTO_DIA_NOMBRE"),
@@ -39,8 +39,8 @@ public class DetalleEve extends AppCompatActivity {
                 getIntent().getStringExtra("EXTRA_EVENTO_DESCRIPCION"),
                 getIntent().getLongExtra("EXTRA_EVENTO_LONG", -1),
                 getIntent().getIntExtra("EXTRA_EVENTO_IMG", -1));
-*/
-        /*
+
+
         evento.setId(id);
         TextView titulo = findViewById(R.id.tvTituloDesActi);
         TextView dia = findViewById(R.id.tvFechaDesActi);
@@ -58,16 +58,15 @@ public class DetalleEve extends AppCompatActivity {
 
 
         evetoViewModel = new ViewModelProvider(this).get(EventoViewModel.class);
-*/
+
         finalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-/*
+
                 Intent intent = new Intent(DetalleEve.this, MainActivity.class);
                 startActivity(intent);
                 evetoViewModel.delete(evento);
 
- */
                 finish();
 
             }

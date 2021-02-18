@@ -65,8 +65,8 @@ public class NotificationHelper extends ContextWrapper {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 1 , intent, PendingIntent.FLAG_UPDATE_CURRENT );
 
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
-                .setContentTitle("titulo")
-                .setContentText("descripcion")
+                .setContentTitle(titulo)
+                .setContentText(descripcion)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setOnlyAlertOnce(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
