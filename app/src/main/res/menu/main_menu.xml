@@ -14,4 +14,9 @@
        android:title="@string/acerca_del_desarrollador"
        app:showAsAction="never" />
 
+    <item
+        android:id="@+id/configNoti"
+        android:title="Activar notificaciones"
+        app:showAsAction="never"/>
+
 </menu>

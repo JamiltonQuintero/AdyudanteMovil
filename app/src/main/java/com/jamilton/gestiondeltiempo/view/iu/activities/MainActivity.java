@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Data;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -17,6 +18,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +30,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jamilton.gestiondeltiempo.R;
 import com.jamilton.gestiondeltiempo.model.adapter.EventoAdapter;
 import com.jamilton.gestiondeltiempo.model.notificaciones.AlertReceiver;
+import com.jamilton.gestiondeltiempo.model.notificaciones.NotificationHelper;
+import com.jamilton.gestiondeltiempo.model.notificaciones.WorkManagerNotificacion;
 import com.jamilton.gestiondeltiempo.model.pojo.Evento;
 import com.jamilton.gestiondeltiempo.presenter.viewmodel.EventoViewModel;
 import com.jamilton.gestiondeltiempo.view.iu.fragments.DetalleEvento;
@@ -147,8 +151,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Recordatorio Fijado", Toast.LENGTH_SHORT).show();
                 evento.setImg(R.drawable.ic_baseline_check_24);
                 evetoViewModel.update(evento);
-                startAlarm(evento.getL(),evento);
-
+                startAlarm(evento);
+/*
+                Long l = evento.getL() - System.currentTimeMillis();
+                Data data = guardarData(evento);
+                WorkManagerNotificacion.GuardarNoti(l,data,"1");*/
             }
         });
 
@@ -207,6 +214,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
 
+            case R.id.configNoti:
+                Intent intent1 = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                intent1.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                intent1.putExtra(Settings.EXTRA_CHANNEL_ID, NotificationHelper.channelID);
+                startActivity(intent1);
+
             default:
                 Toast.makeText(this, "Algo sucedio, vuelve a intentarlo", Toast.LENGTH_SHORT).show();
         }
@@ -214,11 +227,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void startAlarm(long c , Evento evento) {
+    private void startAlarm(Evento evento) {
+
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
         Intent intent = new Intent(this, AlertReceiver.class);
 
         intent.putExtra("ID", evento.getId());
+        /*
         intent.putExtra("TITULO", evento.getTitulo());
         intent.putExtra("DESCRIPCION", evento.getDescripcion());
         intent.putExtra("HORA", evento.getHora());
@@ -227,8 +243,10 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("NOMBREDIA", evento.getDiaN());
         intent.putExtra("FECHA", evento.getL());
         intent.putExtra("IMG",evento.getImg());
+        */
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, evento.getId(), intent, 0);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c, pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, evento.getL(), pendingIntent);
     }
 
 
@@ -238,6 +256,21 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intent, 0);
         alarmManager.cancel(pendingIntent);
+
+    }
+
+    private Data guardarData(Evento evento){
+        return new Data.Builder()
+
+                .putInt("ID", evento.getId())
+                .putString("TITULO", evento.getTitulo())
+                .putString("DESCRIPCION", evento.getDescripcion())
+                .putString("HORA", evento.getHora())
+                .putString("AMPM", evento.getAmpm())
+                .putString("DIA", evento.getDia())
+                .putString("NOMBREDIA", evento.getDiaN())
+                .putLong("FECHA", evento.getL())
+                .putInt("IMG",evento.getImg()).build();
 
     }
 

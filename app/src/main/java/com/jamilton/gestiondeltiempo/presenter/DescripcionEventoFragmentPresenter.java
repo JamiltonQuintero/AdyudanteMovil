@@ -97,8 +97,6 @@ public class DescripcionEventoFragmentPresenter implements IDescripcionEventoFra
         date.set(Calendar.HOUR_OF_DAY,hora);
         date.set(Calendar.MINUTE,minuto);
         date.set(Calendar.SECOND,0);
-
-
         return date;
     }
 

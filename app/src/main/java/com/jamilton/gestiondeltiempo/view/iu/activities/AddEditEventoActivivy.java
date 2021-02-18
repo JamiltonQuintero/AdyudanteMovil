@@ -83,7 +83,6 @@ public class AddEditEventoActivivy extends AppCompatActivity {
         mPresenter = new DescripcionEventoFragmentPresenter(etTitulo, etDescripcion,AddEditEventoActivivy.this,diaa,anioa,diaNomm,mess,pickerView);
 
 
-
         Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_ID) && toolbar != null){
            getSupportActionBar().setTitle("Modificar Evento");
@@ -122,11 +121,11 @@ public class AddEditEventoActivivy extends AppCompatActivity {
                        int h = hourOfDay;
                        int m = minute;
                        mPresenter.hora(h,m);
-
-
                    }
 
-               },h,m,true);
+               },h,m,false
+
+              );
 
              timePicker.show();
 
@@ -155,9 +154,6 @@ public class AddEditEventoActivivy extends AppCompatActivity {
 
                     }
                 });
-
-
-
             }
         });
 
@@ -173,14 +169,13 @@ public class AddEditEventoActivivy extends AppCompatActivity {
                 Intent intent1 = new Intent(AddEditEventoActivivy.this, MainActivity.class);
                 int id = getIntent().getIntExtra(EXTRA_ID,-1);
 
-                Log.i("TAGGIDDESDE ADDMOD",""+ id);
 
                 if (id == -1){
 
                     Evento evento =mPresenter.crearEvento();
                     Toast.makeText(AddEditEventoActivivy.this, "Registro Exitoso", Toast.LENGTH_SHORT).show();
                     evetoViewModel.insert(evento);
-                    Log.i("TAGGLONG DESDE ADD",""+ evento.getL());
+
                     intent1.putExtra(EXTRA_LONG,evento.getL());
 
                 }
@@ -189,7 +184,6 @@ public class AddEditEventoActivivy extends AppCompatActivity {
                     evento.setId(id);
                     evetoViewModel.update(evento);
                     intent1.putExtra(EXTRA_LONG,evento.getL());
-                    Log.i("TAGGLONG DESDE MOD",""+ evento.getL());
                     Toast.makeText(AddEditEventoActivivy.this, "Modificación Exitoso", Toast.LENGTH_SHORT).show();
 
                 }
