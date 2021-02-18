@@ -45,8 +45,6 @@ public class AlertReceiver extends BroadcastReceiver {
 
             Context context = mContext;
             int id = intent.getIntExtra("ID", -1);
-
-            /*
             String ampm = intent.getStringExtra("AMPM");
             String titulo = intent.getStringExtra("TITULO");
             String dia = intent.getStringExtra("DIA");
@@ -54,10 +52,10 @@ public class AlertReceiver extends BroadcastReceiver {
             String hora = intent.getStringExtra("HORA");
             String descripcion = intent.getStringExtra("DESCRIPCION");
             long fecha = intent.getLongExtra("FECHA", -1);
-            int img = intent.getIntExtra("IMG", -1);*/
+            int img = intent.getIntExtra("IMG", -1);
 
             NotificationHelper notificationHelper = new NotificationHelper(context);
-            NotificationCompat.Builder nb = notificationHelper.getChannelNotification(id /*, ampm, titulo, dia, nombreDia, hora, descripcion, fecha, img*/);
+            NotificationCompat.Builder nb = notificationHelper.getChannelNotification(id ,ampm, titulo, dia, nombreDia, hora, descripcion, fecha, img);
             notificationHelper.getManager().notify(id, nb.build());
             return null;
         }

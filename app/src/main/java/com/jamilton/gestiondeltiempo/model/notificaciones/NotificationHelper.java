@@ -48,11 +48,11 @@ public class NotificationHelper extends ContextWrapper {
         return mManager;
     }
 
-    public NotificationCompat.Builder getChannelNotification(int id /*String ampm,String titulo,String dia,String nombreDia,String hora,String descripcion,long fecha,int img*/) {
+    public NotificationCompat.Builder getChannelNotification(int id ,String ampm,String titulo,String dia,String nombreDia,String hora,String descripcion,long fecha,int img) {
 
         Intent intent = new Intent(this, DetalleEve.class);
         intent.putExtra("EXTRA_EVENTO_ID",id);
-        /*
+
         intent.putExtra("EXTRA_EVENTO_TITULO", titulo);
         intent.putExtra("EXTRA_EVENTO_DESCRIPCION", descripcion);
         intent.putExtra("EXTRA_EVENTO_HORA", hora);
@@ -60,7 +60,7 @@ public class NotificationHelper extends ContextWrapper {
         intent.putExtra("EXTRA_EVENTO_DIA", dia);
         intent.putExtra("EXTRA_EVENTO_DIA_NOMBRE", nombreDia);
         intent.putExtra("EXTRA_EVENTO_LONG", fecha);
-        intent.putExtra("EXTRA_EVENTO_IMG",img);*/
+        intent.putExtra("EXTRA_EVENTO_IMG",img);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 1 , intent, PendingIntent.FLAG_UPDATE_CURRENT );
 

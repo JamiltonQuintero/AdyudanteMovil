@@ -234,7 +234,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AlertReceiver.class);
 
         intent.putExtra("ID", evento.getId());
-        /*
         intent.putExtra("TITULO", evento.getTitulo());
         intent.putExtra("DESCRIPCION", evento.getDescripcion());
         intent.putExtra("HORA", evento.getHora());
@@ -243,7 +242,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("NOMBREDIA", evento.getDiaN());
         intent.putExtra("FECHA", evento.getL());
         intent.putExtra("IMG",evento.getImg());
-        */
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, evento.getId(), intent, 0);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, evento.getL(), pendingIntent);
