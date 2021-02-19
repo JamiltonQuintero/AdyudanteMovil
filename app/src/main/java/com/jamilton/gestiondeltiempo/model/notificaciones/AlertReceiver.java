@@ -1,16 +1,24 @@
 package com.jamilton.gestiondeltiempo.model.notificaciones;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.app.job.JobService;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.view.KeyEventDispatcher;
 
 import com.jamilton.gestiondeltiempo.R;
 import com.jamilton.gestiondeltiempo.model.pojo.Evento;
@@ -22,11 +30,33 @@ public class AlertReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+
+        int id = intent.getIntExtra("ID", -1);
+        String ampm = intent.getStringExtra("AMPM");
+        String titulo = intent.getStringExtra("TITULO");
+        String dia = intent.getStringExtra("DIA");
+        String nombreDia = intent.getStringExtra("NOMBREDIA");
+        String hora = intent.getStringExtra("HORA");
+        String descripcion = intent.getStringExtra("DESCRIPCION");
+        long fecha = intent.getLongExtra("FECHA", -1);
+        int img = intent.getIntExtra("IMG", -1);
+
+        NotificationHelper notificationHelper = new NotificationHelper(context);
+        NotificationCompat.Builder nb = notificationHelper.getChannelNotification(id ,ampm, titulo, dia, nombreDia, hora, descripcion, fecha, img);
+        notificationHelper.getManager().notify(id, nb.build());
+
+        Log.i("TAGGALERT",""+ id);
+
+        /*
         final PendingResult pendingResult = goAsync();
         Task task = new Task(pendingResult,intent,context);
-        task.execute();
+        task.execute();*/
     }
 
+
+
+
+/*
     private static class Task extends AsyncTask<Void,Void,Void> {
 
         private final PendingResult pending;
@@ -66,6 +96,6 @@ public class AlertReceiver extends BroadcastReceiver {
             pending.finish();
         }
 
-    }
+    }*/
 
 }

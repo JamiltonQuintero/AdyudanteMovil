@@ -29,12 +29,12 @@ public class NotificationHelper extends ContextWrapper {
     public NotificationHelper(Context base) {
 
         super(base);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             createChannel();
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.O)
+    @TargetApi(Build.VERSION_CODES.R)
     private void createChannel() {
         NotificationChannel channel = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH);
         getManager().createNotificationChannel(channel);

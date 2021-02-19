@@ -1,8 +1,6 @@
 package com.jamilton.gestiondeltiempo.view.iu.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
@@ -13,11 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Data;
 
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.app.job.JobService;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
@@ -30,8 +34,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jamilton.gestiondeltiempo.R;
 import com.jamilton.gestiondeltiempo.model.adapter.EventoAdapter;
 import com.jamilton.gestiondeltiempo.model.notificaciones.AlertReceiver;
+import com.jamilton.gestiondeltiempo.model.notificaciones.JobServices;
 import com.jamilton.gestiondeltiempo.model.notificaciones.NotificationHelper;
-import com.jamilton.gestiondeltiempo.model.notificaciones.WorkManagerNotificacion;
 import com.jamilton.gestiondeltiempo.model.pojo.Evento;
 import com.jamilton.gestiondeltiempo.presenter.viewmodel.EventoViewModel;
 import com.jamilton.gestiondeltiempo.view.iu.fragments.DetalleEvento;
@@ -131,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 evetoViewModel.delete(adapter.getEventosAT(viewHolder.getAdapterPosition()));
                 cancelAlarm(adapter.getEventosAT(viewHolder.getAdapterPosition()).getId());
-                Toast.makeText(MainActivity.this, "Evento eliminado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Recordatorio eliminado", Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(recyclerView);
 
@@ -205,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                 evetoViewModel.deleteAll();
-                Toast.makeText(this, "Se eliminaron todos los eventos", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Se eliminaron todos los recordatorios", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.desarrollador:
@@ -215,13 +219,23 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.configNoti:
-                Intent intent1 = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-                intent1.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
-                intent1.putExtra(Settings.EXTRA_CHANNEL_ID, NotificationHelper.channelID);
-                startActivity(intent1);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    Intent intent1 = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                    intent1.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                    intent1.putExtra(Settings.EXTRA_CHANNEL_ID, NotificationHelper.channelID);
+                    startActivity(intent1);
+                } else {
+                    Intent intent1 = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                    intent1.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                    intent1.putExtra(Settings.EXTRA_CHANNEL_ID, NotificationHelper.channelID);
+                    startActivity(intent1);
+                }
+
 
             default:
                 Toast.makeText(this, "Algo sucedio, vuelve a intentarlo", Toast.LENGTH_SHORT).show();
+                break;
         }
         return super.onOptionsItemSelected(item);
 
@@ -229,25 +243,67 @@ public class MainActivity extends AppCompatActivity {
 
     private void startAlarm(Evento evento) {
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        Intent intent = new Intent(this, AlertReceiver.class);
 
-        intent.putExtra("ID", evento.getId());
-        intent.putExtra("TITULO", evento.getTitulo());
-        intent.putExtra("DESCRIPCION", evento.getDescripcion());
-        intent.putExtra("HORA", evento.getHora());
-        intent.putExtra("AMPM", evento.getAmpm());
-        intent.putExtra("DIA", evento.getDia());
-        intent.putExtra("NOMBREDIA", evento.getDiaN());
-        intent.putExtra("FECHA", evento.getL());
-        intent.putExtra("IMG",evento.getImg());
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, evento.getId(), intent, 0);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, evento.getL(), pendingIntent);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+
+            Intent intent = new Intent(this, AlertReceiver.class);
+
+            intent.putExtra("ID", evento.getId());
+            intent.putExtra("TITULO", evento.getTitulo());
+            intent.putExtra("DESCRIPCION", evento.getDescripcion());
+            intent.putExtra("HORA", evento.getHora());
+            intent.putExtra("AMPM", evento.getAmpm());
+            intent.putExtra("DIA", evento.getDia());
+            intent.putExtra("NOMBREDIA", evento.getDiaN());
+            intent.putExtra("FECHA", evento.getL());
+            intent.putExtra("IMG", evento.getImg());
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, evento.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, evento.getL(), pendingIntent);
+        } else {
+
+            PersistableBundle bundle = new  PersistableBundle();
+
+            bundle.putInt("ID", evento.getId());
+            bundle.putString("TITULO", evento.getTitulo());
+            bundle.putString("DESCRIPCION", evento.getDescripcion());
+            bundle.putString("HORA", evento.getHora());
+            bundle.putString("AMPM", evento.getAmpm());
+            bundle.putString("DIA", evento.getDia());
+            bundle.putString("NOMBREDIA", evento.getDiaN());
+            bundle.putLong("FECHA", evento.getL());
+            bundle.putInt("IMG", evento.getImg());
+
+            ComponentName componentName = new ComponentName(getApplicationContext(), JobServices.class);
+            JobInfo jobInfo;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                jobInfo = new JobInfo.Builder(evento.getId(), componentName)
+                        .setRequiresCharging(true)
+                        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                        .setPersisted(true)
+                        .setMinimumLatency(0)
+                        .build();
+            } else {
+                jobInfo = new JobInfo.Builder(evento.getId(), componentName)
+                        .setRequiresCharging(true)
+                        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                        .setPersisted(true)
+                        .setPeriodic(0)
+                        .setExtras(bundle)
+                        .build();
+            }
+            JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+            int resultado = scheduler.schedule(jobInfo);
+            if (resultado == JobScheduler.RESULT_SUCCESS) {
+                Log.d("TAGG", "ACABADO");
+            } else {
+                Log.d("TAGG", "Job a fallado");
+            }
+        }
     }
-
-
     private void cancelAlarm(int id) {
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -257,19 +313,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private Data guardarData(Evento evento){
-        return new Data.Builder()
 
-                .putInt("ID", evento.getId())
-                .putString("TITULO", evento.getTitulo())
-                .putString("DESCRIPCION", evento.getDescripcion())
-                .putString("HORA", evento.getHora())
-                .putString("AMPM", evento.getAmpm())
-                .putString("DIA", evento.getDia())
-                .putString("NOMBREDIA", evento.getDiaN())
-                .putLong("FECHA", evento.getL())
-                .putInt("IMG",evento.getImg()).build();
-
-    }
 
 }
