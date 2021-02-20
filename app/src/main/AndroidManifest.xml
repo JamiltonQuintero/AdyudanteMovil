@@ -2,7 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jamilton.gestiondeltiempo">
 
+
+    <uses-permission android:name="android.permission.RECEIVE_LAUNCH_BROADCASTS"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+    <!--required by Android 9-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:allowBackup="true"
@@ -36,8 +41,34 @@
         <receiver android:name=".model.notificaciones.AlertReceiver" android:exported="true" android:enabled="true"
             />
 
-        <service android:name=".model.notificaciones.JobServices"
+        <service android:name=".model.notificaciones.JobServi"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
+
+        <service android:name=".model.notificaciones.servicio.JobService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name=".model.notificaciones.servicio.Service"
+            android:clearTaskOnLaunch="true"
+            android:enabled="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            />
+
+
+        <receiver
+            android:name=".model.notificaciones.servicio.RestartServiceBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="StartMyServiceAtBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="uk.ac.shef.oak.activity_recognition.sensor_service.RestartSensor"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
 
     </application>
 

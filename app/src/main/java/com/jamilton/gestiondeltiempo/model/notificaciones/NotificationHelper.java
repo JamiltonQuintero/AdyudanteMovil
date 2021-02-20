@@ -29,12 +29,12 @@ public class NotificationHelper extends ContextWrapper {
     public NotificationHelper(Context base) {
 
         super(base);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel();
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.R)
+    @TargetApi(Build.VERSION_CODES.O)
     private void createChannel() {
         NotificationChannel channel = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH);
         getManager().createNotificationChannel(channel);
@@ -52,7 +52,6 @@ public class NotificationHelper extends ContextWrapper {
 
         Intent intent = new Intent(this, DetalleEve.class);
         intent.putExtra("EXTRA_EVENTO_ID",id);
-
         intent.putExtra("EXTRA_EVENTO_TITULO", titulo);
         intent.putExtra("EXTRA_EVENTO_DESCRIPCION", descripcion);
         intent.putExtra("EXTRA_EVENTO_HORA", hora);

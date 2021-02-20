@@ -8,19 +8,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Data;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
-import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -34,8 +31,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jamilton.gestiondeltiempo.R;
 import com.jamilton.gestiondeltiempo.model.adapter.EventoAdapter;
 import com.jamilton.gestiondeltiempo.model.notificaciones.AlertReceiver;
-import com.jamilton.gestiondeltiempo.model.notificaciones.JobServices;
+import com.jamilton.gestiondeltiempo.model.notificaciones.JobServi;
 import com.jamilton.gestiondeltiempo.model.notificaciones.NotificationHelper;
+import com.jamilton.gestiondeltiempo.model.notificaciones.servicio.ProcessMainClass;
+import com.jamilton.gestiondeltiempo.model.notificaciones.servicio.RestartServiceBroadcastReceiver;
 import com.jamilton.gestiondeltiempo.model.pojo.Evento;
 import com.jamilton.gestiondeltiempo.presenter.viewmodel.EventoViewModel;
 import com.jamilton.gestiondeltiempo.view.iu.fragments.DetalleEvento;
@@ -155,11 +154,18 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Recordatorio Fijado", Toast.LENGTH_SHORT).show();
                 evento.setImg(R.drawable.ic_baseline_check_24);
                 evetoViewModel.update(evento);
-                startAlarm(evento);
+               // startAlarm(evento);
 /*
                 Long l = evento.getL() - System.currentTimeMillis();
                 Data data = guardarData(evento);
                 WorkManagerNotificacion.GuardarNoti(l,data,"1");*/
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                    RestartServiceBroadcastReceiver.scheduleJob(getApplicationContext());
+                } else {
+                    ProcessMainClass bck = new ProcessMainClass();
+                    bck.launchService(getApplicationContext());
+                }
             }
         });
 
@@ -277,23 +283,28 @@ public class MainActivity extends AppCompatActivity {
             bundle.putLong("FECHA", evento.getL());
             bundle.putInt("IMG", evento.getImg());
 
-            ComponentName componentName = new ComponentName(getApplicationContext(), JobServices.class);
+            ComponentName componentName = new ComponentName(getApplicationContext(), JobServi.class);
             JobInfo jobInfo;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 jobInfo = new JobInfo.Builder(evento.getId(), componentName)
                         .setRequiresCharging(true)
                         .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                         .setPersisted(true)
-                        .setMinimumLatency(0)
+                        //.setExtras(bundle)
+                        .setMinimumLatency(evento.getL() - System.currentTimeMillis())
                         .build();
+                Log.i("TAGGLLi", ""+ evento.getL());
+                Log.i("TAGGLLo", ""+ (evento.getL() - System.currentTimeMillis()));
             } else {
                 jobInfo = new JobInfo.Builder(evento.getId(), componentName)
                         .setRequiresCharging(true)
                         .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                         .setPersisted(true)
-                        .setPeriodic(0)
-                        .setExtras(bundle)
+                        .setPeriodic(evento.getL() - System.currentTimeMillis())
+                        //.setExtras(bundle)
                         .build();
+                Log.d("TAGGL", ""+ evento.getL());
+                Log.d("TAGGL", ""+ (evento.getL() - System.currentTimeMillis()));
             }
             JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
             int resultado = scheduler.schedule(jobInfo);
@@ -312,7 +323,5 @@ public class MainActivity extends AppCompatActivity {
         alarmManager.cancel(pendingIntent);
 
     }
-
-
 
 }
